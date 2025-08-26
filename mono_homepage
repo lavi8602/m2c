@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMTI – Manufacturing Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            //background: linear-gradient(135deg, #101820, #243949);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Particles */
+        /* .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #00d4ff;
+            box-shadow: 0 0 15px #00d4ff;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+                opacity: .4;
+            }
+
+            50% {
+                transform: translateY(-40px);
+                opacity: .9;
+            }
+        } */
+
+        /* HEADER */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+
+            //padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .dashboard-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            //background: linear-gradient(135deg, #00d4ff 0%, #5b63f7 30%, #ff006e 70%, #00d4ff 100%);
+            //color:linear-gradient(135deg, #00d4ff 0%, #5b63f7 30%, #ff006e 70%, #00d4ff 100%);
+            background: linear-gradient(135deg, #00d4ff 0%, #5b63f7 50%, #ff006e 100%);
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+            animation: gradientShift 3s ease-in-out infinite alternate;
+            filter: drop-shadow(0 4px 20px rgba(0, 212, 255, 0.3));
+            letter-spacing: -0.02em;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* .dashboard-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 20px;
+    text-align: center;
+    } */
+
+        .dashboard-subtitle {
+            margin-top: 0;
+            /* remove top margin */
+            margin-bottom: 20px;
+            /* keep bottom margin for spacing before next section */
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            font-weight: 400;
+            text-align: center;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .company-logo {
+            width: 280px;
+            height: 90px;
+            object-fit: contain;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .company-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .machine-logo {
+            width: 350px;
+            height: 170px;
+            object-fit: contain;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .machine-logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* LAYOUT */
+        .main-content {
+            padding: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .machine-image {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            /* space between images */
+            //margin-top: 50px;
+            /* push it down from cards */
+            flex-wrap: wrap;
+            /* responsive wrapping */
+        }
+
+        .machine-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%),
+        rgba(0, 0, 0, 0.3); */
+            border-radius: 28px;
+            padding: 30px;
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* .machine-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: left 0.6s ease;
+        } */
+        /*         
+        .machine-card:hover::before {
+        left: 100%;
+        }
+         */
+        .machine-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow:
+                0 32px 64px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                0 0 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .machine-card img {
+            width: flex-wrap;
+            height: 410px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: brightness(0.9) contrast(1.1);
+        }
+
+        .machine-card:hover img {
+            transform: scale(1.05);
+            filter: brightness(1) contrast(1.2);
+        }
+
+        .image-caption1 {
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+            justify-content: center;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 350px;
+        }
+
+        .image-caption2 {
+            align-items: center;
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+            justify-content: center;
+            opacity: 0.9;
+            display: flex;
+            right: 80px;
+            gap: 8px;
+            width: 550px;
+        }
+
+        .cards-container {
+            display: grid;
+            margin-top: 30px;
+            grid-template-columns: repeat(6, 1fr);
+            /* exactly 5 per row */
+            grid-template-rows: repeat(2, auto);
+            /* exactly 2 rows */
+            gap: 20px;
+        }
+
+        .content-layout {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            /* Reduced gap from 40px → 20px */
+            margin-bottom: 30px;
+            /* Slightly reduced */
+        }
+        
+        .card {
+            background:
+            linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%),
+            rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            //overflow: hidden;
+            backdrop-filter: blur(20px);
+            
+        }
+            
+
+        /* .card-icon {
+            font-size: 24px;
+            color: #00d4ff;
+        } */
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* space between icon & title */
+        margin-bottom: 8px;
+        }
+        
+        .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #ddd;
+        white-space: nowrap; 
+        }
+        
+        .card-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #fff;
+        text-align: center; 
+        width: 100%; 
+        margin-top: 4px;
+        }
+
+        /* .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ddd;
+        }
+
+        .card-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            transition: color .3s ease, transform .3s ease;
+        } */
+
+        .card:hover .card-value {
+            color: #00ffa1;
+            transform: scale(1.05);
+        }
+
+        /* LED Indicators */
+        .led-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .led-off {
+            background: #ff4757;
+            box-shadow: 0 0 20px #ff4757;
+        }
+
+        .led-idle {
+            background: #ffa502;
+            box-shadow: 0 0 20px #ffa502;
+        }
+
+        .led-running {
+            background: #2ed573;
+            box-shadow: 0 0 20px #2ed573;
+        }
+
+        /* ALARM Highlight */
+        .alarm-card.alarm-active {
+            border: 2px solid #ff4757;
+            box-shadow: 0 0 20px rgba(255, 71, 87, 0.7);
+            animation: shake 0.4s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-3px);
+            }
+
+            75% {
+                transform: translateX(3px);
+            }
+        }
+
+        /* Responsive */
+        @media(max-width:1200px) {
+            .content-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .machine-images-section {
+                flex-direction: column;
+            }
+        }
+
+        .alarm-card {
+            background:
+                linear-gradient(135deg, rgba(255, 71, 87, 0.2) 0%, rgba(255, 71, 87, 0.05) 100%),
+                rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 71, 87, 0.4);
+            box-shadow: 0 0 30px rgba(255, 71, 87, 0.1);
+            justify-content: center;
+        }
+
+        .part-count-card {
+            background:
+                linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 212, 255, 0.05) 100%),
+                rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .machine-status .status-off {
+            border: 2px solid #ff4757;
+            /* red */
+            box-shadow: 0 0 20px rgba(255, 71, 87, 0.5);
+            background:
+                linear-gradient(135deg, rgba(255, 71, 87, 0.2) 0%, rgba(255, 71, 87, 0.05) 100%),
+                rgba(0, 0, 0, 0.3);
+        }
+
+        .machine-status .status-idle {
+            border: 2px solid #ffa502;
+            /* orange */
+            box-shadow: 0 0 20px rgba(255, 165, 2, 0.5);
+            background:
+                linear-gradient(135deg, rgba(255, 165, 2, 0.2) 0%, rgba(255, 165, 2, 0.05) 100%),
+                rgba(0, 0, 0, 0.3);
+        }
+
+        .machine-status .status-running {
+            border: 2px solid #2ed573;
+            /* green */
+            box-shadow: 0 0 20px rgba(46, 213, 115, 0.5);
+            background:
+                linear-gradient(135deg, rgba(46, 213, 115, 0.2) 0%, rgba(46, 213, 115, 0.05) 100%),
+                rgba(0, 0, 0, 0.3);
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for Firefox */
+        html {
+            scrollbar-width: none;
+        }
+
+        /* Hide scrollbar for IE/Edge (legacy) */
+        body {
+            -ms-overflow-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="particles" class="particles"></div>
+
+    <!-- HEADER -->
+    <div class="dashboard-header">
+        <img src="https://raw.githubusercontent.com/lavi8602/m2c/refs/heads/main/WhatsApp_Image_2025-06-13_at_14.22.46-removebg-preview.png" alt="MHI" class="machine-logo">
+
+        <div class="title-container">
+            <h1 class="dashboard-title">Central Manufacturing Technology Institute</h1>
+            <p class="dashboard-subtitle">Real-time monitoring & control dashboard</p>
+        </div>
+
+        <img src="https://raw.githubusercontent.com/lavi8602/m2c/refs/heads/main/cmti-removebg-preview.png" alt="CMTI" class="company-logo">
+    </div>
+
+    <!-- MAIN -->
+    <main class="main-content">
+        
+        <div class="machine-image">
+            <div class="machine-card">
+                <img src="https://raw.githubusercontent.com/lavi8602/m2c/refs/heads/main/operator.jpeg" alt="Operator">
+                <div class="image-caption1">👷‍♂️ Operator Station</div>
+            </div>
+    
+            <div class="machine-card">
+                <img src="https://raw.githubusercontent.com/lavi8602/m2c/refs/heads/main/mono200without_BG.png" alt="MONO 200">
+                <div class="image-caption2">🛠️ MONO 200 Machine</div>
+            </div>
+        </div>
+        <div class="cards-container">
+    
+            <div class="card machine-status">
+                <div class="card-header">
+                    <i class="fas fa-power-off card-icon"></i>
+                    <div class="card-title">Machine Status</div>
+                </div>
+                <div id="machineStatusWrapper" style="display:flex;align-items:center;">
+                    <span class="led-indicator" id="ledStatus"></span>
+                    <span class="card-value" id="machineStatus">Loading...</span>
+                </div>
+            </div>
+    
+            <div class="card">
+                <div class="card-header"><i class="fas fa-industry card-icon"></i>
+                    <div class="card-title">Machine Name</div>
+                </div>
+                <div class="card-value" id="machineName">Loading...</div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-clock card-icon"></i>
+                    <div class="card-title">Runtime</div>
+                </div>
+                <div class="card-value" id="runtime">Loading...</div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-tachometer-alt card-icon"></i>
+                    <div class="card-title">Spindle OVR</div>
+                </div>
+                <div class="card-value" id="speedovr">Loading...</div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-forward card-icon"></i>
+                    <div class="card-title">Feed OVR</div>
+                </div>
+                <div class="card-value" id="feedrateovr">Loading...</div>
+            </div>
+    
+            <div class="card alarm-card">
+                <div class="card-header">
+                    <i class="fas fa-exclamation-triangle card-icon"></i>
+                    <div class="card-title">Alarm Count</div>
+                </div>
+                <div class="card-value" id="alarms">Loading...</div>
+            </div>
+    
+            <div class="card">
+                <div class="card-header"><i class="fas fa-cog card-icon"></i>
+                    <div class="card-title">Operating Mode</div>
+                </div>
+                <div class="card-value" id="operatingMode">Loading...</div>
+            </div>
+    
+            <div class="card">
+                <div class="card-header"><i class="fas fa-hammer card-icon"></i>
+                    <div class="card-title">Current Job</div>
+                </div>
+                <div class="card-value" id="currentJob">Loading...</div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-users card-icon"></i>
+                    <div class="card-title">Shift</div>
+                </div>
+                <div class="card-value" id="shiftStatus">Loading...</div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-cubes card-icon"></i>
+                    <div class="card-title">Part Count</div>
+                </div>
+                <div class="card-value" id="partcount">Loading...</div>
+            </div>
+            <div class="card part-count-card">
+                <div class="card-header"><i class="fas fa-bullseye card-icon"></i>
+                    <div class="card-title">Target</div>
+                </div>
+                <div class="card-value" id="targetParts">Loading...</div>
+            </div>
+    
+            <div class="card">
+                <div class="card-header"><i class="fas fa-file-code card-icon"></i>
+                    <div class="card-title">Program</div>
+                </div>
+                <div class="card-value" id="program">Loading...</div>
+            </div>
+        </div>
+    
+    
+    </main>
+
+    <script>
+        // Particles
+    // function createParticles() {
+    //   const container = document.getElementById('particles');
+    //   for (let i=0;i<50;i++){
+    //     const p=document.createElement('div');
+    //     p.className='particle';
+    //     p.style.left=Math.random()*100+'%';
+    //     p.style.top=Math.random()*100+'%';
+    //     p.style.animationDelay=Math.random()*8+'s';
+    //     container.appendChild(p);
+    //   }
+    // }
+    // createParticles();
+
+    // Fetch global values
+    function updateValues(){
+      fetch("http://127.0.0.1:1880/globalValues")
+      .then(r=>r.json())
+      .then(data=>{
+        document.getElementById("machineName").textContent=data.Machine_name||"N/A";
+        document.getElementById("runtime").textContent=data.Runtime||"00:00:00";
+        document.getElementById("speedovr").textContent=data.SpeedOvr||"100%";
+        document.getElementById("feedrateovr").textContent=data.FeedRateOvr||"100%";
+        document.getElementById("operatingMode").textContent=data.Operating_Mode||"N/A";
+        document.getElementById("program").textContent=data.Program||"N/A";
+        document.getElementById("currentJob").textContent=data.Current_Job||"N/A";
+        document.getElementById("shiftStatus").textContent=data.Shift_Status||"N/A";
+        document.getElementById("partcount").textContent=data.P_art_Count||"0";
+        document.getElementById("targetParts").textContent=data.Target_Parts||"0";
+        document.getElementById("alarms").textContent=data.Alarms||"0";
+
+// <!-- 
+//         // Machine status
+//         const status=data.Machine_status||"Unknown";
+//         const led=document.getElementById("ledStatus");
+//         const statusEl=document.getElementById("machineStatus");
+//         statusEl.textContent=status;
+//         led.className="led-indicator";
+//         if(status.toLowerCase().includes("stop")||status.toLowerCase().includes("off")) led.classList.add("led-off");
+//         else if(status.toLowerCase().includes("idle")) led.classList.add("led-idle");
+//         else if(status.toLowerCase().includes("run")) led.classList.add("led-running");
+
+//         // Alarm highlight
+//         const alarmCard=document.querySelector(".alarm-card");
+//         if(parseInt(data.Alarms)>0) alarmCard.classList.add("alarm-active");
+//         else alarmCard.classList.remove("alarm-active");
+//       })
+//       .catch(e=>console.error("Error fetching values:",e)); -->
+
+
+            const status = data.Machine_status || "Unknown";
+            document.getElementById("statusText").textContent = status;
+            
+            const statusCard = document.querySelector(".machine-status");
+            statusCard.classList.remove("status-off", "status-idle", "status-running");
+            
+            if (status.toLowerCase().includes("stop") || status.toLowerCase().includes("off"))
+            statusCard.classList.add("status-off");
+            else if (status.toLowerCase().includes("idle"))
+            statusCard.classList.add("status-idle");
+            else if (status.toLowerCase().includes("run"))
+            statusCard.classList.add("status-running");
+            
+            // Alarm highlight
+            const alarmCard=document.querySelector(".alarm-card");
+            if(parseInt(data.Alarms)>0) alarmCard.classList.add("alarm-active");
+            else alarmCard.classList.remove("alarm-active");
+            })
+            
+    }
+    setInterval(updateValues,5000);
+    updateValues();
+    </script>
+</body>
+
+</html>
