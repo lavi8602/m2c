@@ -19,7 +19,7 @@
             //background: linear-gradient(135deg, #101820, #243949);
             color: #fff;
             min-height: 100vh;
-            overflow-x: hidden;
+            //overflow-x: hidden;
         }
 
         /* Particles */
